@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: "Admin123$"   # quote values with $ to avoid compose env interpolation
+      # Optional extras (uncomment if useful):
+      # MYSQL_DATABASE: appdb
+      # MYSQL_USER: appuser
+      # MYSQL_PASSWORD: "AppUser123$"
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      # Use CMD-SHELL so $${...} is preserved for expansion inside the container.
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p\"$${MYSQL_ROOT_PASSWORD}\" || exit 1"]
+      interval: 10s
+      retries: 5
+      timeout: 5s
+      start_period: 30s
+
+volumes:
+  mysql-data:
