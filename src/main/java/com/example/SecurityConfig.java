@@ -8,14 +8,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-<<<<<<< HEAD
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
-
 import java.util.List;
-=======
->>>>>>> main
+
+
 
 @Configuration
 public class SecurityConfig {
@@ -29,7 +27,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-<<<<<<< HEAD
+
             .cors(cors -> cors.configurationSource(request -> {
                 CorsConfiguration config = new CorsConfiguration();
                 config.setAllowedOrigins(List.of("http://localhost:5173")); // FE origin
@@ -44,11 +42,7 @@ public class SecurityConfig {
                     "/api/v1/auth/register",
                     "/api/v1/auth/login"
                 ).permitAll()
-=======
-            .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/v1/auth/register", "/api/v1/auth/login").permitAll()
->>>>>>> main
+
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -57,19 +51,11 @@ public class SecurityConfig {
 
         return http.build();
     }
-<<<<<<< HEAD
 
-=======
-    
->>>>>>> main
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-<<<<<<< HEAD
 
 }
-=======
-}
->>>>>>> main
