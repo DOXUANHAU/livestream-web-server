@@ -1,9 +1,57 @@
-mvnw.cmd
+# ------------------------------
+# Maven Wrapper
+# ------------------------------
 mvnw
-/target
+mvnw.cmd
 !.mvn/wrapper/maven-wrapper.jar
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.properties
+
+# ------------------------------
+# Build output
+# ------------------------------
+/target/
 *.log
 *.tmp
+dependency-reduced-pom.xml
 
+# ------------------------------
+# IDEs and Editors
+# ------------------------------
+.idea/
+*.iml
+.project
+.classpath
+.settings/
+.vscode/
+*~
+*.swp
+*.swo
 
+# ------------------------------
+# Compiled / Packaged artifacts
+# ------------------------------
+*.class
+*.jar
+*.war
+*.ear
 
+# ------------------------------
+# Environment / Config files
+# ------------------------------
+.env
+*.env
+application-local.properties
+application-dev.properties
+application-prod.properties
+
+# ------------------------------
+# OS-specific junk
+# ------------------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

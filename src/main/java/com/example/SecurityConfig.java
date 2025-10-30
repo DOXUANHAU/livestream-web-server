@@ -14,6 +14,7 @@ import org.springframework.web.filter.CorsFilter;
 
 import java.util.List;
 
+
 @Configuration
 public class SecurityConfig {
 
@@ -26,6 +27,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+
             .cors(cors -> cors.configurationSource(request -> {
                 CorsConfiguration config = new CorsConfiguration();
                 config.setAllowedOrigins(List.of("http://localhost:5173")); // FE origin
@@ -40,6 +42,7 @@ public class SecurityConfig {
                     "/api/v1/auth/register",
                     "/api/v1/auth/login"
                 ).permitAll()
+
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
