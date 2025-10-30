@@ -5,6 +5,8 @@ import com.example.auth.model.User;
 import com.example.auth.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import java.util.Optional;
+
 
 @Service
 public class AuthService {
@@ -18,36 +20,47 @@ public class AuthService {
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
     }
-
-    public void register(RegisterNewAccountRequest request) {
+    
+    public ApiResponse<UserResponse> register(RegisterNewAccountRequest request) {
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
-            throw new RuntimeException("Email already exists");
+            return new ApiResponse<>(false, "Email already exists");
         }
 
         User user = new User();
         user.setEmail(request.getEmail());
-
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setFullName(request.getFullName());
 
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
+
+        UserResponse userResponse = new UserResponse(savedUser.getEmail(), savedUser.getFullName());
+
+        return new ApiResponse<>(true, "Register successful", userResponse);
     }
 
-    public LoginResponse login(LoginRequest request) {
-        User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("Invalid email or password"));
+    public ApiResponse<LoginResponse> login(LoginRequest request) {
+        Optional<User> optionalUser = userRepository.findByEmail(request.getEmail());
+
+        if (optionalUser.isEmpty()) {
+            return new ApiResponse<>(false, "Invalid email or password");
+        }
+
+        User user = optionalUser.get();
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid email or password");
+            return new ApiResponse<>(false, "Invalid email or password");
         }
 
         String token = jwtService.generateToken(user.getEmail());
-        return new LoginResponse(token);
+        LoginResponse response = new LoginResponse(token, user.getEmail(), user.getFullName());
+
+        return new ApiResponse<>(true, "Login successful", response);
     }
 
-    public UserProfileResponse getProfile(String email) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        return new UserProfileResponse(user.getEmail(), user.getFullName());
-    }
+
+    // public UserProfileResponse getProfile(String email) {
+    //     User user = userRepository.findByEmail(email)
+    //             .orElseThrow(() -> new RuntimeException("User not found"));
+    //     return new UserProfileResponse(user.getEmail(), user.getFullName());
+    // }
 }

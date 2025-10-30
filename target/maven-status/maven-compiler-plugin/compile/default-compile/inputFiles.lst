@@ -1,0 +1,13 @@
+/home/xuanhau/CodeSpace/freelancer/livestream_app/livestream-web-server/src/main/java/com/example/JwtAuthenticationFilter.java
+/home/xuanhau/CodeSpace/freelancer/livestream_app/livestream-web-server/src/main/java/com/example/LivestreamApplication.java
+/home/xuanhau/CodeSpace/freelancer/livestream_app/livestream-web-server/src/main/java/com/example/SecurityConfig.java
+/home/xuanhau/CodeSpace/freelancer/livestream_app/livestream-web-server/src/main/java/com/example/auth/controller/AuthController.java
+/home/xuanhau/CodeSpace/freelancer/livestream_app/livestream-web-server/src/main/java/com/example/auth/dto/ApiResponse.java
+/home/xuanhau/CodeSpace/freelancer/livestream_app/livestream-web-server/src/main/java/com/example/auth/dto/LoginRequest.java
+/home/xuanhau/CodeSpace/freelancer/livestream_app/livestream-web-server/src/main/java/com/example/auth/dto/LoginResponse.java
+/home/xuanhau/CodeSpace/freelancer/livestream_app/livestream-web-server/src/main/java/com/example/auth/dto/RegisterNewAccountRequest.java
+/home/xuanhau/CodeSpace/freelancer/livestream_app/livestream-web-server/src/main/java/com/example/auth/dto/UserResponse.java
+/home/xuanhau/CodeSpace/freelancer/livestream_app/livestream-web-server/src/main/java/com/example/auth/model/User.java
+/home/xuanhau/CodeSpace/freelancer/livestream_app/livestream-web-server/src/main/java/com/example/auth/repository/UserRepository.java
+/home/xuanhau/CodeSpace/freelancer/livestream_app/livestream-web-server/src/main/java/com/example/auth/service/AuthService.java
+/home/xuanhau/CodeSpace/freelancer/livestream_app/livestream-web-server/src/main/java/com/example/auth/service/JwtService.java
