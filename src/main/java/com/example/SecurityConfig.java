@@ -1,5 +1,7 @@
 package com.example;
 
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -9,10 +11,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
-
-import java.util.List;
 
 
 @Configuration
@@ -30,7 +28,8 @@ public class SecurityConfig {
 
             .cors(cors -> cors.configurationSource(request -> {
                 CorsConfiguration config = new CorsConfiguration();
-                config.setAllowedOrigins(List.of("http://localhost:5173")); // FE origin
+                config.setAllowedOrigins(List.of("http://localhost:5173")); // FE origin port vite dev environment
+                // config.setAllowedOrigins(List.of("http://localhost:3000")); // port product env
                 config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                 config.setAllowedHeaders(List.of("*"));
                 config.setAllowCredentials(true);
@@ -40,7 +39,10 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
                     "/api/v1/auth/register",
-                    "/api/v1/auth/login"
+                    "/api/v1/auth/login",
+                    "/ws/**", // Allow WebSocket connections
+                    "/topic/**",     // ✅ allow stomp topics
+                    "/app/**"        // ✅ allow message mappings
                 ).permitAll()
 
                 .anyRequest().authenticated()

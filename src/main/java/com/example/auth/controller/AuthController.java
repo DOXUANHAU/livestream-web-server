@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.auth.dto.ApiResponse;
-import com.example.auth.dto.LoginRequest;
-import com.example.auth.dto.LoginResponse;
-import com.example.auth.dto.RegisterNewAccountRequest;
+import com.example.auth.dto.request.LoginRequest;
+import com.example.auth.dto.request.RegisterNewAccountRequest;
+import com.example.auth.dto.response.ApiResponse;
+import com.example.auth.dto.response.LoginResponse;
 import com.example.auth.service.AuthService;
 import com.example.auth.service.JwtService;
 
