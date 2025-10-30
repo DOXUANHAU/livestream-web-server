@@ -23,22 +23,27 @@ public class AuthController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<Void> register(@RequestBody RegisterNewAccountRequest request) {
-        authService.register(request);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<ApiResponse<?>> register(@RequestBody RegisterNewAccountRequest request) {
+        ApiResponse<?> response = authService.register(request);
+        return ResponseEntity
+                .status(response.isSuccess() ? 200 : 400)
+                .body(response);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
-        return ResponseEntity.ok(authService.login(request));
+    public ResponseEntity<ApiResponse<LoginResponse>> login(@RequestBody LoginRequest request) {
+        ApiResponse<LoginResponse> response = authService.login(request);
+        return ResponseEntity
+                .status(response.isSuccess() ? 200 : 401)
+                .body(response);
     }
 
-    @GetMapping("/profile")
-    public ResponseEntity<UserProfileResponse> profile(@RequestHeader("Authorization") String authHeader) {
-        String token = authHeader.replace("Bearer ", "");
-        String email = jwtService.extractEmail(token); 
-        return ResponseEntity.ok(authService.getProfile(email));
-    }
+    // @GetMapping("/profile")
+    // public ResponseEntity<UserProfileResponse> profile(@RequestHeader("Authorization") String authHeader) {
+    //     String token = authHeader.replace("Bearer ", "");
+    //     String email = jwtService.extractEmail(token); 
+    //     return ResponseEntity.ok(authService.getProfile(email));
+    // }
 
 
     // @PostMapping("/logout")

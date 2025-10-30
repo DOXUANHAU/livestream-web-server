@@ -1,8 +1,9 @@
 C:\Users\nhgle\livestream-web-server\src\main\java\com\example\auth\controller\AuthController.java
+C:\Users\nhgle\livestream-web-server\src\main\java\com\example\auth\dto\ApiResponse.java
 C:\Users\nhgle\livestream-web-server\src\main\java\com\example\auth\dto\LoginRequest.java
 C:\Users\nhgle\livestream-web-server\src\main\java\com\example\auth\dto\LoginResponse.java
 C:\Users\nhgle\livestream-web-server\src\main\java\com\example\auth\dto\RegisterNewAccountRequest.java
-C:\Users\nhgle\livestream-web-server\src\main\java\com\example\auth\dto\UserProfileResponse.java
+C:\Users\nhgle\livestream-web-server\src\main\java\com\example\auth\dto\UserResponse.java
 C:\Users\nhgle\livestream-web-server\src\main\java\com\example\auth\model\User.java
 C:\Users\nhgle\livestream-web-server\src\main\java\com\example\auth\repository\UserRepository.java
 C:\Users\nhgle\livestream-web-server\src\main\java\com\example\auth\service\AuthService.java

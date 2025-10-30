@@ -1,6 +1,5 @@
 com\example\auth\dto\LoginResponse.class
 com\example\LivestreamApplication.class
-com\example\auth\dto\UserProfileResponse.class
 com\example\auth\dto\LoginRequest.class
 com\example\auth\dto\RegisterNewAccountRequest.class
 com\example\auth\service\JwtService.class
