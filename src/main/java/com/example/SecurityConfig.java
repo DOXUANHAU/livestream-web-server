@@ -13,6 +13,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 
 
+// import java.util.List;
+
+
 @Configuration
 public class SecurityConfig {
 
@@ -25,7 +28,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-
             .cors(cors -> cors.configurationSource(request -> {
                 CorsConfiguration config = new CorsConfiguration();
                 config.setAllowedOrigins(List.of("http://localhost:5173")); // FE origin port vite dev environment
@@ -42,9 +44,9 @@ public class SecurityConfig {
                     "/api/v1/auth/login",
                     "/ws/**", // Allow WebSocket connections
                     "/topic/**",     // ✅ allow stomp topics
-                    "/app/**"        // ✅ allow message mappings
+                    "/app/**",        // ✅ allow message mappings
+                    "/api/v1/streamers/**"
                 ).permitAll()
-
                 .anyRequest().authenticated()
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

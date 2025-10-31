@@ -1,11 +1,39 @@
 version: '3.8'
 
 services:
+  # Node Media Server
+  nms:
+    build: ./nms
+    container_name: nms
+    restart: unless-stopped
+    ports:
+      - "1935:1935"   # RTMP ingest from OBS
+      - "8000:8000"   # direct NMS http (optional)
+    volumes:
+      - ./nms/media:/media
+    networks:
+      - livestream-net
+
+  # Nginx proxy for HLS
+  nginx:
+    build: ./nginx
+    container_name: nginx-proxy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - nms
+    volumes:
+      - nginx-cache:/var/cache/nginx
+    networks:
+      - livestream-net
+
+  # MySQL database
   mysql:
     image: mysql:latest
     environment:
-      MYSQL_ROOT_PASSWORD: "Admin123$"   # quote values with $ to avoid compose env interpolation
-      # Optional extras (uncomment if useful):
+      MYSQL_ROOT_PASSWORD: "Admin123$"
+      # Optional extras:
       # MYSQL_DATABASE: appdb
       # MYSQL_USER: appuser
       # MYSQL_PASSWORD: "AppUser123$"
@@ -15,7 +43,6 @@ services:
       - mysql-data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     healthcheck:
-      # Use CMD-SHELL so $${...} is preserved for expansion inside the container.
       test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p\"$${MYSQL_ROOT_PASSWORD}\" || exit 1"]
       interval: 10s
       retries: 5
@@ -23,4 +50,9 @@ services:
       start_period: 30s
 
 volumes:
+  nginx-cache:
   mysql-data:
+
+networks:
+  livestream-net:
+    driver: bridge
