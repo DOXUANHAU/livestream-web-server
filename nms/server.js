@@ -1,4 +1,5 @@
 const NodeMediaServer = require('node-media-server');
+const axios = require('axios');
 
 const config = {
   rtmp: {
@@ -11,7 +12,7 @@ const config = {
   http: {
     port: 8000,
     allow_origin: '*',
-    mediaroot: '/media'
+    mediaroot: './media'
   },
   trans: {
     ffmpeg: '/usr/bin/ffmpeg',
@@ -28,17 +29,31 @@ const config = {
 
 const nms = new NodeMediaServer(config);
 
-nms.on('prePublish', (id, StreamPath, args) => {
-  console.log('[NodeEvent on prePublish]', `id=${id} StreamPath=${StreamPath} args=${JSON.stringify(args)}`);
-});
+nms.on('prePublish', async (id, StreamPath, args) => {
+  const streamKey = StreamPath.split('/').pop();
+  console.log(`[prePublish] Checking key: ${streamKey}`);
 
-nms.on('postPublish', (id, StreamPath, args) => {
-  console.log('[NodeEvent on postPublish]', `id=${id} StreamPath=${StreamPath}`);
-});
+  try {
+    const res = await axios.post('http://localhost:8080/api/v1/streamers/validate', {
+      streamKey: streamKey
+    });
 
-nms.on('donePublish', (id, StreamPath, args) => {
-  console.log('[NodeEvent on donePublish]', `id=${id} StreamPath=${StreamPath}`);
+    if (!res.data.success) {
+      console.log('Invalid stream key:', streamKey);
+      const session = nms.getSession(id);
+      session.reject();
+    } else {
+      console.log('Stream key valid for streamer:', res.data.data.streamerName);
+
+      const session = nms.getSession(id);
+      session.streamerName = res.data.data.streamerName;
+    }
+  } catch (err) {
+    console.error('Error validating key:', err.message);
+    const session = nms.getSession(id);
+    session.reject();
+  }
 });
 
 nms.run();
-console.log('Node Media Server started');
+console.log('🚀 Node Media Server started');
