@@ -35,6 +35,8 @@ Spring automatically deserializes the JSON message into your ChatMessage model
 
         System.out.println("Received message: " + message.getSender());
         System.out.println("Received message: " + message.getContent());
+        System.out.println("Received message: " + message.getChannelName());
+        // You can add any additional processing logic here, such as saving the message to a database\
 
         return message; // Echo the received message to all subscribers
 
