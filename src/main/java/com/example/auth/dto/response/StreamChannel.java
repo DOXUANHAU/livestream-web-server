@@ -1,21 +1,19 @@
-package com.example.socket.model;
+package com.example.auth.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
-@Setter
 @Getter
-public class ChatMessage {
-    private String sender;
-    private String content;
-    private String channelName;
+@Setter
+public class StreamChannel {
     
+    private String streamChannel;
+    private String email;
+    private String name;
 }
