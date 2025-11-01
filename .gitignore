@@ -8,7 +8,7 @@ mvnw.cmd
 .mvn/wrapper/maven-wrapper.properties
 target/
 nms/node_modules/
-
+nms/
 # ------------------------------
 # Build output
 # ------------------------------
