@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.auth.dto.request.CreateStreamerRequest;
 import com.example.auth.dto.response.ApiResponse;
+import com.example.auth.dto.response.StreamChannel;
 import com.example.auth.dto.response.StreamerResponse;
 import com.example.auth.model.Streamer;
 import com.example.auth.model.User;
@@ -77,5 +78,28 @@ public class StreamerService {
     private String generateStreamKey() {
         return UUID.randomUUID().toString().replace("-", "") +
                UUID.randomUUID().toString().substring(0, 8);
+    }
+
+
+    /**
+     * Retrieves the stream channel data for a given streamer.
+     *
+     * @param channel The name of the streamer channel.
+     * @return ApiResponse containing the StreamChannel data.
+     */
+
+    public ApiResponse<StreamChannel> getStreamChannelData(String  channelName) {
+       
+        Streamer streamer = streamerRepository.findByStreamerName(channelName)
+                .orElseThrow(() -> new RuntimeException("Streamer not found"));
+
+
+        StreamChannel response = new StreamChannel();
+        response.setStreamChannel(streamer.getStreamerName());
+        response.setEmail(streamer.getUser().getEmail());
+        response.setName(streamer.getUser().getFullName());
+
+
+        return new ApiResponse<>(true, "Streamer channel data retrieved successfully", response);
     }
 }
