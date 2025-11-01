@@ -29,11 +29,20 @@ public class StreamerController {
         return streamerService.createStreamer(request);
     }
 
-    @PostMapping("/validate")
-    public ResponseEntity<?> validate(@RequestBody Map<String, String> payload) {
-        String streamKey = payload.get("streamKey");
-        return ResponseEntity.ok(streamerService.validateStreamKey(streamKey));
+@PostMapping("/validate")
+public ResponseEntity<?> validate(
+        @RequestHeader(value = "X-INTERNAL-TOKEN", required = false) String internalToken,
+        @RequestBody Map<String, String> payload) {
+
+    System.out.println("Received X-INTERNAL-TOKEN: " + internalToken);
+
+    if (!"super-secret-stream-validation".equals(internalToken)) {
+        return ResponseEntity.status(401).body(Map.of("success", false, "message", "Unauthorized"));
     }
+
+    String streamKey = payload.get("streamKey");
+    return ResponseEntity.ok(streamerService.validateStreamKey(streamKey));
+}
 
 
  

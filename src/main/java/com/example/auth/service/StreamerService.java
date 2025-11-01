@@ -67,7 +67,7 @@ public class StreamerService {
     Streamer s = streamer.get();
     StreamerResponse response = new StreamerResponse(
         s.getStreamerName(),
-        null
+        s.getStreamKey()
     );
 
     return new ApiResponse<>(true, "Stream key valid", response);

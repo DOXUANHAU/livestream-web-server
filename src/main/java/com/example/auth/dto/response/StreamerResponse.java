@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class StreamerResponse {
-    private String username;
+    private String streamerName;
     private String streamKey;
 
 }
