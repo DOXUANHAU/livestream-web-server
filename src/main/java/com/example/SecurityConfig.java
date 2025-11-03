@@ -45,7 +45,8 @@ public class SecurityConfig {
                     "/ws/**", // Allow WebSocket connections
                     "/topic/**",     // ✅ allow stomp topics
                     "/app/**",        // ✅ allow message mappings
-                    "/api/v1/streamers/**"
+                    "/api/v1/streamers/**",
+                    "api/v1/user/**" // allow user endpoints
                 ).permitAll()
                 .anyRequest().authenticated()
             )
