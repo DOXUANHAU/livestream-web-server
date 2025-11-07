@@ -2,6 +2,7 @@ package com.example.auth.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,21 +23,13 @@ public class UserActionController {
     @PostMapping("/subscribe")
     public ResponseEntity<?>  subscribe(@RequestBody SubscriptionRequest request) {
         // Handle subscription logic
-        // return ResponseEntity.ok(new SubscriptionResponse());
-
-
-            // System.out.println("Received subscription request: " + request.getSubscriberName() + " by " + request.getSubscribedToEmail());
-
-
      ApiResponse<SubscriptionResponse>   response = userActionService.subscribeUserToStreamer(request.getSubscriberName(), request.getSubscribedToEmail());
-
-
         return ResponseEntity.ok(response);
 
     }
 
-    // @DeleteMapping("/unsubscribe")
-    // public void unsubscribe(@RequestBody SubscriptionRequest request) {
-    //     // Handle unsubscription logic
-    // }
+    @DeleteMapping("/unsubscribe")
+    public void unsubscribe(@RequestBody SubscriptionRequest request) {
+        // Handle unsubscription logic
+    }
 }
