@@ -30,8 +30,8 @@ public class StreamerController {
         return streamerService.createStreamer(request);
     }
 
-@PostMapping("/validate")
-public ResponseEntity<?> validate(
+    @PostMapping("/validate")
+    public ResponseEntity<?> validate(
         @RequestHeader(value = "X-INTERNAL-TOKEN", required = false) String internalToken,
         @RequestBody Map<String, String> payload) {
 
@@ -44,12 +44,10 @@ public ResponseEntity<?> validate(
     String streamKey = payload.get("streamKey");
     return ResponseEntity.ok(streamerService.validateStreamKey(streamKey));
 }
-
-
  
     @GetMapping("/channel")
-public ResponseEntity<?> getStreamChannel(@RequestParam String channelName) {
-    return ResponseEntity.ok(streamerService.getStreamChannelData(channelName));
-}
+    public ResponseEntity<?> getStreamChannel(@RequestParam String channelName) {
+        return ResponseEntity.ok(streamerService.getStreamChannelData(channelName));
+    }
 
 }
