@@ -26,6 +26,7 @@ const config = {
         app: 'live',
         hls: true,
         hlsFlags: '[hls_time=4:hls_list_size=10]',
+        // hlsKeep: true  // this will keep all file .ts
       },
     ],
   },
