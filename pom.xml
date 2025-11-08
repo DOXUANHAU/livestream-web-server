@@ -31,6 +31,13 @@
 	</properties>
 	
 	<dependencies>
+    <!--Machine Learning-->
+    <dependency>
+        <groupId>com.microsoft.onnxruntime</groupId>
+        <artifactId>onnxruntime</artifactId>
+        <version>1.19.0</version>
+    </dependency>
+    
     <!-- Web -->
     <dependency>
         <groupId>org.springframework.boot</groupId>
@@ -147,6 +154,16 @@
 				</configuration>
 			</plugin>
 		</plugins>
+            
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>**/*</include> </includes>
+            </resource>
+        </resources>
 	</build>
+
 
 </project>
