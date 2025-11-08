@@ -1,7 +1,10 @@
 package com.example.auth.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import com.example.auth.model.User;
 import com.example.auth.model.UserSubscription;
 
 public interface UserActionRepository extends JpaRepository<UserSubscription, Long> {
@@ -21,6 +24,6 @@ public interface UserActionRepository extends JpaRepository<UserSubscription, Lo
     //         @Param("subscriberId") Long subscriberId,
     //         @Param("streamerId") Long streamerId
     // );
+public Optional<UserSubscription> findBySubscriberAndSubscribedTo(User subscriber, User subscribedTo);
 
-    
 }

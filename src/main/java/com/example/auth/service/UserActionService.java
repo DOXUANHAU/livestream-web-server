@@ -64,5 +64,30 @@ public class UserActionService {
         // Placeholder response
     }
 
+    public ApiResponse<SubscriptionResponse> unsubscribeUserFromStreamer(String streamChannel, String userEmail) {
+    try {
+          // get streamer ID
+        User streamer = streamerRepository.findByStreamerName(streamChannel)
+                .orElseThrow(() -> new RuntimeException("Streamer not found"))
+                .getUser();
+
+        // get user ID
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Find the subscription record
+        UserSubscription subscription = subscriptionRepository.findBySubscriberAndSubscribedTo(user, streamer)
+                .orElseThrow(() -> new RuntimeException("Subscription not found"));
+
+        // Delete the subscription
+        subscriptionRepository.delete(subscription);
+        return new ApiResponse<SubscriptionResponse>(true, "Unsubscription", null);
+    } catch (Exception e) {
+        return new ApiResponse<SubscriptionResponse>(false, "Unsubscription failed", null);
+    }
+
+        // Placeholder response
+    }   
+
 
 }
