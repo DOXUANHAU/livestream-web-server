@@ -1,7 +1,42 @@
-version: '3.8'
+# Xóa dòng "version: '3.8'" vì nó đã lỗi thời (theo log của bạn)
 
 services:
-  # Node Media Server
+  frontend:
+      build: ../LIVESTREAM-WEB-APP
+      container_name: frontend-app
+      restart: unless-stopped
+      ports:
+        - "3000:80"
+      networks:
+        - livestream-net
+      depends_on:
+        - backend
+        - nginx
+  # ----------------------------------------
+  # 1. BACKEND SERVICE (Java Spring Boot)
+  # ----------------------------------------
+  backend:
+    build: . # Build từ Dockerfile trong thư mục gốc
+    container_name: backend-service
+    restart: unless-stopped
+    ports:
+      - "8080:8080" # Cổng API của Spring Boot
+    depends_on:
+      mysql: # Chờ cho đến khi MySQL "healthy" (sẵn sàng)
+        condition: service_healthy
+      nms: # Chỉ cần NMS "started" (đã khởi động)
+        condition: service_started
+    networks:
+      - livestream-net
+    environment:
+      # Cấu hình kết nối Database (sử dụng tên service 'mysql')
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/appdb?useSSL=false
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: "Admin123$"
+
+  # ----------------------------------------
+  # 2. NODE MEDIA SERVER (NMS)
+  # ----------------------------------------
   nms:
     build: ./nms
     container_name: nms
@@ -9,45 +44,55 @@ services:
     ports:
       - "1935:1935"   # RTMP ingest from OBS
       - "8000:8000"   # direct NMS http (optional)
+      - "8001:8001"
     volumes:
       - ./nms/media:/media
+      # - ./nms:/app
+      # - /app/node_modules # External volume for node_modules
     networks:
       - livestream-net
 
-  # Nginx proxy for HLS
+  # ----------------------------------------
+  # 3. NGINX PROXY (Reverse Proxy for HLS)
+  # ----------------------------------------
   nginx:
     build: ./nginx
     container_name: nginx-proxy
     restart: unless-stopped
     ports:
-      - "80:80"
+      - "80:80" # Cổng truy cập HLS Stream/Frontend
     depends_on:
       - nms
+      - backend
     volumes:
       - nginx-cache:/var/cache/nginx
     networks:
       - livestream-net
 
-  # MySQL database
+  # ----------------------------------------
+  # 4. MYSQL DATABASE
+  # ----------------------------------------
   mysql:
     image: mysql:latest
+    container_name: mysql-db
     environment:
       MYSQL_ROOT_PASSWORD: "Admin123$"
-      # Optional extras:
-      # MYSQL_DATABASE: appdb
-      # MYSQL_USER: appuser
-      # MYSQL_PASSWORD: "AppUser123$"
+      MYSQL_DATABASE: appdb # Đặt tên DB đồng bộ với Spring Boot (appdb)
     ports:
       - "3306:3306"
     volumes:
       - mysql-data:/var/lib/mysql
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro # Đảm bảo bạn có file init.sql
     healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p\"$${MYSQL_ROOT_PASSWORD}\" || exit 1"]
+      # ĐÂY LÀ PHẦN SỬA LỖI:
+      # Chờ cho đến khi DB "appdb" thực sự sẵn sàng
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p\"$${MYSQL_ROOT_PASSWORD}\" && mysql -h 127.0.0.1 -uroot -p\"$${MYSQL_ROOT_PASSWORD}\" -e 'USE appdb'"]
       interval: 10s
       retries: 5
       timeout: 5s
       start_period: 30s
+    networks: # Đảm bảo MySQL tham gia mạng
+      - livestream-net
 
 volumes:
   nginx-cache:
