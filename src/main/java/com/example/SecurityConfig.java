@@ -30,8 +30,8 @@ public class SecurityConfig {
         http
             .cors(cors -> cors.configurationSource(request -> {
                 CorsConfiguration config = new CorsConfiguration();
-                config.setAllowedOrigins(List.of("http://localhost:5173")); // FE origin port vite dev environment
-                // config.setAllowedOrigins(List.of("http://localhost:3000")); // port product env
+                // config.setAllowedOrigins(List.of("http://localhost:5173")); // FE origin port vite dev environment
+                config.setAllowedOrigins(List.of("http://localhost:3000")); // port product env
                 config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                 config.setAllowedHeaders(List.of("*"));
                 config.setAllowCredentials(true);
