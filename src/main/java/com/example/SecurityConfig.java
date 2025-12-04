@@ -47,7 +47,8 @@ public class SecurityConfig {
                     "/app/**",        // ✅ allow message mappings
                     "/api/v1/streamers/**",
                     "/api/v1/user/actions/**", // allow user endpoints
-                    "/api/v1/predict"
+                    "/api/v1/predict",
+                    "/api/v1/user/chat/**"
                     ).permitAll()
                 .anyRequest().authenticated()
             )
