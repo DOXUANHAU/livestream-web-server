@@ -74,8 +74,7 @@ public class ChatController {
     ) {
 
          try {
-             String text = message.getContent();
-
+             String text = message.getContent().replaceAll("[\\p{So}\\p{Cn}\\p{Cs}]", "<emoji>");
         OnnxTensor inputTensor = OnnxTensor.createTensor(env, new String[][]{{text}});
         Map<String, OnnxTensor> inputs = new HashMap<>();
         inputs.put("string_input", inputTensor);
