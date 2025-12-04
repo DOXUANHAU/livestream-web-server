@@ -1,22 +1,22 @@
-# Xóa dòng "version: '3.8'" vì nó đã lỗi thời (theo log của bạn)
-
 services:
   frontend:
-      build: ../LIVESTREAM-WEB-APP
-      container_name: frontend-app
-      restart: unless-stopped
-      ports:
-        - "3000:80"
-      networks:
-        - livestream-net
-      depends_on:
-        - backend
-        - nginx
+    build: ../LIVESTREAM-WEB-APP
+    image: slytherins/livestream-frontend:latest
+    container_name: frontend-app
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    networks:
+      - livestream-net
+    depends_on:
+      - backend
+      - nginx
   # ----------------------------------------
   # 1. BACKEND SERVICE (Java Spring Boot)
   # ----------------------------------------
   backend:
     build: . # Build từ Dockerfile trong thư mục gốc
+    image: slytherins/livestream-backend:latest # <-- ĐÃ SỬA LỖI
     container_name: backend-service
     restart: unless-stopped
     ports:
@@ -39,6 +39,7 @@ services:
   # ----------------------------------------
   nms:
     build: ./nms
+    image: slytherins/livestream-nms:latest
     container_name: nms
     restart: unless-stopped
     ports:
@@ -47,8 +48,6 @@ services:
       - "8001:8001"
     volumes:
       - ./nms/media:/media
-      # - ./nms:/app
-      # - /app/node_modules # External volume for node_modules
     networks:
       - livestream-net
 
@@ -57,6 +56,7 @@ services:
   # ----------------------------------------
   nginx:
     build: ./nginx
+    image: slytherins/livestream-nginx:latest
     container_name: nginx-proxy
     restart: unless-stopped
     ports:
@@ -82,16 +82,14 @@ services:
       - "3306:3306"
     volumes:
       - mysql-data:/var/lib/mysql
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro # Đảm bảo bạn có file init.sql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     healthcheck:
-      # ĐÂY LÀ PHẦN SỬA LỖI:
-      # Chờ cho đến khi DB "appdb" thực sự sẵn sàng
       test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p\"$${MYSQL_ROOT_PASSWORD}\" && mysql -h 127.0.0.1 -uroot -p\"$${MYSQL_ROOT_PASSWORD}\" -e 'USE appdb'"]
       interval: 10s
       retries: 5
       timeout: 5s
       start_period: 30s
-    networks: # Đảm bảo MySQL tham gia mạng
+    networks:
       - livestream-net
 
 volumes:

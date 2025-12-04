@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.auth.dto.request.CreateStreamerRequest;
+import com.example.auth.dto.request.UpdateProfileRequest;
 import com.example.auth.dto.response.ApiResponse;
 import com.example.auth.dto.response.StreamerResponse;
 import com.example.auth.service.StreamerService;
@@ -94,5 +95,20 @@ public class StreamerController {
         liveStreamKeys.remove(streamerName);
         System.out.println("Stream stopped: " + streamerName);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/update")
+    public ResponseEntity<ApiResponse<StreamerResponse>> updateProfile(@RequestBody UpdateProfileRequest request) {
+        ApiResponse<StreamerResponse> response = streamerService.updateProfile(request);
+        
+        if (!response.isSuccess()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<?> getMyProfile(@RequestParam String email) {
+        return ResponseEntity.ok(streamerService.getProfileByEmail(email));
     }
 }

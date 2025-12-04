@@ -11,6 +11,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.Getter;
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -28,6 +29,9 @@ public class User {
     private String password;
 
     private String fullName;
+
+    private LocalDate dob; 
+    private String gender;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Streamer streamer;
