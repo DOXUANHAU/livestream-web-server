@@ -40,9 +40,9 @@ public class ChatController {
         return ResponseEntity.ok(respone);
     }
 
-    /** ❌ Khi streamer tắt live → xoá toàn bộ chat */
-    @DeleteMapping("/clear/{stream}")
-    public void clearChat(@PathVariable String stream) {
-        chatService.clearMessages(stream);
-    }
+    // /** ❌ Khi streamer tắt live → xoá toàn bộ chat */
+    // @DeleteMapping("/clear/{stream}")
+    // public void clearChat(@PathVariable String stream) {
+    //     chatService.clearMessages(stream);
+    // }
 }

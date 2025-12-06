@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import com.example.auth.model.ChatMessageEntity;
 import com.example.auth.repository.ChatMessageRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class ChatService {
 
@@ -29,6 +31,7 @@ public class ChatService {
         return repo.findByStream(stream);
     }
 
+    @Transactional
     public void clearMessages(String stream) {
         repo.deleteByStream(stream);
     }
