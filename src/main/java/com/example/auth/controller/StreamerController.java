@@ -19,12 +19,16 @@ import com.example.auth.dto.request.CreateStreamerRequest;
 import com.example.auth.dto.request.UpdateProfileRequest;
 import com.example.auth.dto.response.ApiResponse;
 import com.example.auth.dto.response.StreamerResponse;
+import com.example.auth.service.ChatService;
 import com.example.auth.service.StreamerService;
 
 
 @RestController
 @RequestMapping("/api/v1/streamers")
 public class StreamerController {
+
+    @Autowired
+    private ChatService chatService;
 
     @Autowired
     private StreamerService streamerService;
@@ -94,6 +98,8 @@ public class StreamerController {
         String streamerName = payload.get("streamerName");
         liveStreamKeys.remove(streamerName);
         System.out.println("Stream stopped: " + streamerName);
+        chatService.clearMessages(streamerName);
+        System.out.println("Stream clear mess: " + streamerName);
         return ResponseEntity.ok().build();
     }
 
